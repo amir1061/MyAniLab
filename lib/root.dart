@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myanilab/Core/API/api.dart';
 import 'package:myanilab/Core/Providers/token_provider.dart';
+import 'package:myanilab/UI/Views/home_view.dart';
 import 'package:myanilab/UI/Views/profile_view.dart';
+import 'package:myanilab/UI/Widgets/mal_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -94,6 +96,17 @@ class _RootState extends State<Root> {
 
   @override
   Widget build(BuildContext context) {
-    return const ProfileView();
+    return Scaffold(
+      drawer: const MalDrawer(),
+      body: Consumer<ValueNotifier<int>>(
+        builder: (context, activePage, child) => IndexedStack(
+          index: activePage.value,
+          children: const [
+            HomeView(),
+            ProfileView(),
+          ],
+        ),
+      ),
+    );
   }
 }

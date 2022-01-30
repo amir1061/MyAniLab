@@ -13,8 +13,9 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ValueNotifier(ThemeMode.dark)),
         ChangeNotifierProvider(create: (_) => TokenProvider()),
+        ChangeNotifierProvider(create: (_) => ValueNotifier(0)),
+        ChangeNotifierProvider(create: (_) => ValueNotifier(ThemeMode.dark)),
       ],
       child: const MyApp(),
     ),

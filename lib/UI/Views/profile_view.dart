@@ -12,6 +12,14 @@ class ProfileView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            final scaffoldState =
+                context.findRootAncestorStateOfType<ScaffoldState>()!;
+            scaffoldState.openDrawer();
+          },
+        ),
       ),
       body: Consumer<TokenProvider>(
         builder: (context, tokenProvider, child) => tokenProvider.token == null

@@ -10,21 +10,24 @@ import 'package:myanilab/Core/Utils/helpers.dart';
 import 'package:myanilab/Core/Utils/mal_exceptions.dart';
 
 class API {
+  static final oAuthUrl = dotenv.env['oAuthUrl'] ?? '';
+  static final baseUrl = dotenv.env['baseUrl'] ?? '';
+  static final clientId = dotenv.env['clientId'] ?? '';
+  static final codeVerifier = dotenv.env['codeVerifier'] ?? '';
+
   static Future<Token> getToken(String code) async {
     try {
-      log(dotenv.env['oAuthUrl']!);
       final resp = await http.post(
-        Uri.parse(dotenv.env['oAuthUrl']!),
+        Uri.parse(oAuthUrl),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
         },
         body:
-            'client_id=${dotenv.env['clientId']}&code=$code&code_verifier=${dotenv.env['codeVerifier']}&grant_type=authorization_code',
+            'client_id=$clientId&code=$code&code_verifier=$codeVerifier&grant_type=authorization_code',
       );
       log(resp.body.toString());
-      final data = parseResponse(resp);
-      final t = Token.fromJson(data);
-      return t;
+      final json = parseResponse(resp);
+      return Token.fromJson(json);
     } on SocketException catch (_) {
       throw Exception('No internet!');
     } catch (_) {
@@ -36,16 +39,15 @@ class API {
     try {
       log('refreshing token');
       final resp = await http.post(
-        Uri.parse(dotenv.env['oAuthUrl']!),
+        Uri.parse(oAuthUrl),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
         },
         body:
-            'client_id=${dotenv.env['clientId']}&refresh_token=${GetIt.I.get<Token>().refreshToken}&grant_type=refresh_token',
+            'client_id=$clientId&refresh_token=${GetIt.I.get<Token>().refreshToken}&grant_type=refresh_token',
       );
-      final data = parseResponse(resp);
-      final t = Token.fromJson(data);
-      return t;
+      final json = parseResponse(resp);
+      return Token.fromJson(json);
     } on SocketException catch (_) {
       throw Exception('No internet!');
     } on UnauthorisedException catch (_) {
@@ -58,16 +60,13 @@ class API {
   static Future<User> getUser() async {
     try {
       final resp = await http.get(
-        Uri.parse(
-            '${dotenv.env['baseUrl']}/users/@me?fields=email,anime_statistics'),
-        headers: {
-          HttpHeaders.authorizationHeader: GetIt.I.get<Token>().token,
-        },
+        Uri.parse('$baseUrl/users/@me?fields=email,anime_statistics'),
+        headers: {HttpHeaders.authorizationHeader: GetIt.I.get<Token>().token},
       );
       log(resp.statusCode.toString());
       log(resp.body);
-      final data = parseResponse(resp);
-      return User.fromJson(data);
+      final json = parseResponse(resp);
+      return User.fromJson(json);
     } on SocketException catch (_) {
       throw Exception('No internet!');
     } on UnauthorisedException catch (_) {
