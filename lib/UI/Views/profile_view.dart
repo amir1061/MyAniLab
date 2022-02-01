@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:myanilab/Core/Providers/token_provider.dart';
-import 'package:myanilab/Core/Utils/helpers.dart';
+import 'package:myanilab/Core/Providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<UserProvider>(context, listen: false).getUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,28 +30,23 @@ class ProfileView extends StatelessWidget {
           },
         ),
       ),
-      body: Consumer<TokenProvider>(
-        builder: (context, tokenProvider, child) => tokenProvider.token == null
-            ? const Center(child: Text('You are not logged In'))
-            : const Center(child: Text('Now you are logged in')),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          final uri = Uri(
-            scheme: 'https',
-            host: 'myanimelist.net',
-            path: 'v1/oauth2/authorize',
-            queryParameters: {
-              'response_type': 'code',
-              'client_id': dotenv.env['clientId'],
-              'code_challenge': dotenv.env['codeVerifier'],
-              'state': dotenv.env['state'],
-            },
+      body: Consumer<UserProvider>(
+        builder: (_, userProvider, __) {
+          if (userProvider.error != null) {
+            return Center(
+              child: Text(userProvider.error!.message),
+            );
+          }
+          if (userProvider.user == null) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          final user = userProvider.user!;
+          return Center(
+            child: Text(user.name),
           );
-          launchUrl(uri.toString());
         },
-        icon: const Icon(Icons.login),
-        label: const Text('Login'),
       ),
     );
   }

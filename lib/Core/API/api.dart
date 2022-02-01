@@ -29,9 +29,11 @@ class API {
       final json = parseResponse(resp);
       return Token.fromJson(json);
     } on SocketException catch (_) {
-      throw Exception('No internet!');
-    } catch (_) {
-      rethrow;
+      throw NoNetworkException('please check your network and try again!');
+    } on FormatException catch (_) {
+      throw MalFormatException('failed parsing response!');
+    } catch (e) {
+      throw UnknownExcption(e.toString());
     }
   }
 
@@ -49,18 +51,23 @@ class API {
       final json = parseResponse(resp);
       return Token.fromJson(json);
     } on SocketException catch (_) {
-      throw Exception('No internet!');
+      throw NoNetworkException('please check your network and try again!');
     } on UnauthorisedException catch (_) {
+      //?What happens if refreshing token failed
       rethrow;
-    } catch (_) {
-      rethrow;
+    } on FormatException catch (_) {
+      throw MalFormatException('failed parsing response!');
+    } catch (e) {
+      throw UnknownExcption(e.toString());
     }
   }
 
   static Future<User> getUser() async {
     try {
       final resp = await http.get(
-        Uri.parse('$baseUrl/users/@me?fields=email,anime_statistics'),
+        Uri.parse(
+          '$baseUrl/users/@me?fields=picture,gender,birthday,location,anime_statistics,time_zone,is_supporter',
+        ),
         headers: {HttpHeaders.authorizationHeader: GetIt.I.get<Token>().token},
       );
       log(resp.statusCode.toString());
@@ -68,10 +75,15 @@ class API {
       final json = parseResponse(resp);
       return User.fromJson(json);
     } on SocketException catch (_) {
-      throw Exception('No internet!');
+      throw NoNetworkException('please check your network and try again!');
     } on UnauthorisedException catch (_) {
       await refreshToken();
       return await getUser();
+    } on FormatException catch (_) {
+      throw MalFormatException('failed parsing response!');
+    } catch (e) {
+      throw UnknownExcption(e.toString());
+      // throw UnknownExcption('an unknown error has occured!');
     }
   }
 }

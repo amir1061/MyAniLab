@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:myanilab/Core/Models/token.dart';
 
 class TokenProvider extends ChangeNotifier {
@@ -16,6 +17,9 @@ class TokenProvider extends ChangeNotifier {
 
   set token(Token? t) {
     _token = t;
+    if (t == null) {
+      const FlutterSecureStorage().deleteAll();
+    }
     notifyListeners();
   }
 }

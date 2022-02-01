@@ -37,3 +37,18 @@ class InvalidInputException extends MalException {
   InvalidInputException(String message)
       : super(message: message, prefix: "Invalid Input: ");
 }
+
+class MalFormatException extends MalException {
+  MalFormatException(String message)
+      : super(message: message, prefix: "Format Exception: ");
+}
+
+class NoNetworkException extends MalException {
+  NoNetworkException(String message)
+      : super(message: message, prefix: "No Network: ");
+}
+
+class UnknownExcption extends MalException {
+  UnknownExcption(String message)
+      : super(message: message, prefix: "Uknown Error: ");
+}
