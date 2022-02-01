@@ -1,5 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:get_it/get_it.dart';
+// import 'package:get_it/get_it.dart';
 
 class Token {
   late String _accessToken;
@@ -48,7 +48,6 @@ class Token {
     accessToken = json['access_token'];
     tokenType = json['token_type'];
     expiresIn = json['expires_in'];
-    GetIt.I.registerSingleton<Token>(this);
   }
 
   static Future<Token?> fromStorage() async {
@@ -58,9 +57,7 @@ class Token {
     final tt = await _storage.read(key: 'tokenType');
     final ei = await _storage.read(key: 'expiresIn');
     if (at != null && rt != null && tt != null && ei != null) {
-      final t = Token(at, rt, tt, int.parse(ei));
-      GetIt.I.registerSingleton<Token>(t);
-      return t;
+      return Token(at, rt, tt, int.parse(ei));
     }
     return null;
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myanilab/Core/Providers/token_provider.dart';
 import 'package:myanilab/Core/Providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +30,15 @@ class _ProfileViewState extends State<ProfileView> {
             scaffoldState.openDrawer();
           },
         ),
+        actions: [
+          IconButton(
+            onPressed: () => Provider.of<TokenProvider>(
+              context,
+              listen: false,
+            ).token = null,
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: Consumer<UserProvider>(
         builder: (_, userProvider, __) {
