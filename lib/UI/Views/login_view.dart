@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:myanilab/Core/Utils/helpers.dart';
 
 class LoginWidget extends StatelessWidget {
@@ -27,33 +26,20 @@ class LoginWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Icon(Icons.sentiment_neutral, size: 80),
-            const SizedBox(height: 10),
-            const Text(
+          children: const [
+            Icon(Icons.sentiment_neutral, size: 80),
+            SizedBox(height: 10),
+            Text(
               'Please login using your MyAnimeList account to get access to this feature!',
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
             FloatingActionButton.extended(
-              onPressed: () {
-                final uri = Uri(
-                  scheme: 'https',
-                  host: 'myanimelist.net',
-                  path: 'v1/oauth2/authorize',
-                  queryParameters: {
-                    'response_type': 'code',
-                    'client_id': dotenv.env['clientId'],
-                    'code_challenge': dotenv.env['codeVerifier'],
-                    'state': dotenv.env['state'],
-                  },
-                );
-                launchUrl(uri.toString());
-              },
-              icon: const Icon(Icons.login),
-              label: const Text('Login'),
+              onPressed: login,
+              icon: Icon(Icons.login),
+              label: Text('Login'),
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
           ],
         ),
       ),

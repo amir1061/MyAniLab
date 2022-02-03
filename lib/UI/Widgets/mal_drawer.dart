@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myanilab/UI/Widgets/theme_icon_button.dart';
+import 'package:myanilab/UI/Widgets/mal_drawer_header.dart';
 import 'package:provider/provider.dart';
 
 class MalDrawer extends StatelessWidget {
@@ -13,15 +13,7 @@ class MalDrawer extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: theme.colorScheme.primary),
-              currentAccountPicture: const CircleAvatar(),
-              otherAccountsPictures: [
-                ThemeIconButton(color: theme.colorScheme.onPrimary),
-              ],
-              accountName: const Text('Aissam Ouajib'),
-              accountEmail: const Text('ouajibaissam@gmail.com'),
-            ),
+            const MalDrawerHeader(),
             ListTile(
               selectedTileColor: theme.colorScheme.primary.withOpacity(.3),
               selected: activePage.value == 0,

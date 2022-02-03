@@ -19,6 +19,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -53,8 +54,42 @@ class _ProfileViewState extends State<ProfileView> {
             );
           }
           final user = userProvider.user!;
-          return Center(
-            child: Text(user.name),
+          return ListView(
+            children: [
+              ExpansionTile(
+                initiallyExpanded: true,
+                leading: CircleAvatar(
+                  backgroundColor: theme.colorScheme.primaryVariant,
+                  backgroundImage:
+                      user.picture != null ? NetworkImage(user.picture!) : null,
+                  child: user.picture == null
+                      ? const Icon(Icons.person, size: 30)
+                      : null,
+                ),
+                title: Text(user.name),
+                subtitle: Text('ID: ${user.id}'),
+                // expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                expandedAlignment: Alignment.centerLeft,
+                childrenPadding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                children: [
+                  if (user.gender != null) Text('Gender: ${user.gender!}'),
+                  if (user.birthday != null)
+                    Text(
+                      'Birthday: ${user.birthday!.toIso8601String().split('T').first}',
+                    ),
+                  Text(
+                    'Member since: ${user.joinedAt.toIso8601String().split('T').first}',
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: Text(
+                  'Your Statistics',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ),
+            ],
           );
         },
       ),
