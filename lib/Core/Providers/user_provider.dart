@@ -10,6 +10,12 @@ class UserProvider extends ChangeNotifier {
   User? get user => _user;
   MalException? get error => _error;
 
+  reset() {
+    _user = null;
+    _error = null;
+    notifyListeners();
+  }
+
   Future<void> getUser() async {
     try {
       _user = await API.getUser();

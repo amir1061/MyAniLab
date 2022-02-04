@@ -35,10 +35,16 @@ class _ProfileViewState extends State<ProfileView> {
         ),
         actions: [
           IconButton(
-            onPressed: () => Provider.of<TokenProvider>(
-              context,
-              listen: false,
-            ).token = null,
+            onPressed: () {
+              Provider.of<TokenProvider>(
+                context,
+                listen: false,
+              ).token = null;
+              Provider.of<UserProvider>(
+                context,
+                listen: false,
+              ).reset();
+            },
             icon: const Icon(Icons.logout),
           ),
         ],
