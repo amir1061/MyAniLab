@@ -9,6 +9,7 @@ import 'package:myanilab/Core/Providers/token_provider.dart';
 import 'package:myanilab/UI/Views/home_view.dart';
 import 'package:myanilab/UI/Views/profile_view.dart';
 import 'package:myanilab/UI/Views/login_view.dart';
+import 'package:myanilab/UI/Views/top_anime_view.dart';
 import 'package:myanilab/UI/Widgets/mal_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
@@ -104,6 +105,7 @@ class _RootState extends State<Root> {
           index: activePage.value,
           children: [
             const HomeView(),
+            const TopAnimeView(),
             Consumer<TokenProvider>(
               builder: (_, tokenProvider, __) => tokenProvider.token == null
                   ? const LoginWidget(title: 'Profile')

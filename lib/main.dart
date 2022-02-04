@@ -15,7 +15,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TokenProvider()),
-        ChangeNotifierProvider(create: (_) => ValueNotifier(0)),
+        ChangeNotifierProvider(create: (_) => ValueNotifier(2)),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => ValueNotifier(ThemeMode.dark)),
       ],

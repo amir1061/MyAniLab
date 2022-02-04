@@ -17,7 +17,7 @@ class MalDrawer extends StatelessWidget {
             ListTile(
               selectedTileColor: theme.colorScheme.primary.withOpacity(.3),
               selected: activePage.value == 0,
-              leading: const Icon(Icons.local_fire_department),
+              leading: const Icon(Icons.home),
               title: const Text('Home'),
               onTap: () {
                 Navigator.pop(context);
@@ -27,11 +27,21 @@ class MalDrawer extends StatelessWidget {
             ListTile(
               selectedTileColor: theme.colorScheme.primary.withOpacity(.3),
               selected: activePage.value == 1,
+              leading: const Icon(Icons.local_fire_department),
+              title: const Text('Top Anime'),
+              onTap: () {
+                Navigator.pop(context);
+                if (activePage.value != 1) activePage.value = 1;
+              },
+            ),
+            ListTile(
+              selectedTileColor: theme.colorScheme.primary.withOpacity(.3),
+              selected: activePage.value == 2,
               leading: const Icon(Icons.person),
               title: const Text('Profile'),
               onTap: () {
                 Navigator.pop(context);
-                if (activePage.value != 1) activePage.value = 1;
+                if (activePage.value != 2) activePage.value = 2;
               },
             ),
           ],

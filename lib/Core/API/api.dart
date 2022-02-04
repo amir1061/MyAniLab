@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
+import 'package:myanilab/Core/Models/anime.dart';
 import 'package:myanilab/Core/Models/token.dart';
 import 'package:http/http.dart' as http;
 import 'package:myanilab/Core/Models/user.dart';
@@ -14,6 +15,14 @@ class API {
   static final baseUrl = dotenv.env['baseUrl'] ?? '';
   static final clientId = dotenv.env['clientId'] ?? '';
   static final codeVerifier = dotenv.env['codeVerifier'] ?? '';
+
+  static Map<String, String> getHeaders() {
+    try {
+      return {HttpHeaders.authorizationHeader: GetIt.I.get<Token>().token};
+    } catch (_) {
+      return {'X-MAL-CLIENT-ID': clientId};
+    }
+  }
 
   static Future<Token> getToken(String code) async {
     try {
@@ -68,7 +77,7 @@ class API {
         Uri.parse(
           '$baseUrl/users/@me?fields=picture,gender,birthday,location,anime_statistics,time_zone,is_supporter',
         ),
-        headers: {HttpHeaders.authorizationHeader: GetIt.I.get<Token>().token},
+        headers: getHeaders(),
       );
       log(resp.statusCode.toString());
       log(resp.body);
@@ -83,7 +92,32 @@ class API {
       throw MalFormatException('failed parsing response!');
     } catch (e) {
       throw UnknownExcption(e.toString());
-      // throw UnknownExcption('an unknown error has occured!');
+    }
+  }
+
+  static Future<List<Anime>> getAnimeList(String endpointSuffix) async {
+    try {
+      final resp = await http.get(
+        Uri.parse(
+          '$baseUrl$endpointSuffix',
+        ),
+        headers: getHeaders(),
+      );
+      log(resp.statusCode.toString());
+      log(resp.body);
+      final json = parseResponse(resp);
+      return json['data']
+          .map<Anime>((data) => Anime.fromJson(data['node']))
+          .toList();
+    } on SocketException catch (_) {
+      throw NoNetworkException('please check your network and try again!');
+    } on UnauthorisedException catch (_) {
+      await refreshToken();
+      return await getAnimeList(endpointSuffix);
+    } on FormatException catch (_) {
+      throw MalFormatException('failed parsing response!');
+    } catch (e) {
+      throw UnknownExcption(e.toString());
     }
   }
 }

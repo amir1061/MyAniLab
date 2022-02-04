@@ -76,7 +76,6 @@ class _ProfileViewState extends State<ProfileView> {
                 ),
                 title: Text(user.name),
                 subtitle: Text('ID: ${user.id}'),
-                // expandedCrossAxisAlignment: CrossAxisAlignment.start,
                 expandedAlignment: Alignment.centerLeft,
                 childrenPadding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                 children: [
@@ -98,9 +97,9 @@ class _ProfileViewState extends State<ProfileView> {
                 series: <CircularSeries>[
                   DoughnutSeries<ChartData, String>(
                     dataSource: user.animeStatistics?.animeStatistics() ?? [],
-                    xValueMapper: (ChartData data, _) => data.title,
-                    yValueMapper: (ChartData data, _) => data.value,
-                    dataLabelMapper: (ChartData data, _) =>
+                    xValueMapper: (data, _) => data.title,
+                    yValueMapper: (data, _) => data.value,
+                    dataLabelMapper: (data, _) =>
                         '${data.title}: ${data.value}',
                     dataLabelSettings: const DataLabelSettings(
                       isVisible: true,
@@ -108,13 +107,13 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                   )
                 ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Text(
-                  'Anime Statistics',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
+                annotations: <CircularChartAnnotation>[
+                  CircularChartAnnotation(
+                    widget: Text(
+                      'Total: ${user.animeStatistics?.numItems ?? 0}',
+                    ),
+                  )
+                ],
               ),
             ],
           );
