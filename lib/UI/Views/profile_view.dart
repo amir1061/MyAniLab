@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:myanilab/Core/Models/chart_data.dart';
 import 'package:myanilab/Core/Providers/token_provider.dart';
 import 'package:myanilab/Core/Providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -82,10 +84,29 @@ class _ProfileViewState extends State<ProfileView> {
                   ),
                 ],
               ),
+              SfCircularChart(
+                title: ChartTitle(
+                  text: 'Anime stats',
+                  alignment: ChartAlignment.near,
+                ),
+                series: <CircularSeries>[
+                  DoughnutSeries<ChartData, String>(
+                    dataSource: user.animeStatistics?.animeStatistics() ?? [],
+                    xValueMapper: (ChartData data, _) => data.title,
+                    yValueMapper: (ChartData data, _) => data.value,
+                    dataLabelMapper: (ChartData data, _) =>
+                        '${data.title}: ${data.value}',
+                    dataLabelSettings: const DataLabelSettings(
+                      isVisible: true,
+                      labelPosition: ChartDataLabelPosition.outside,
+                    ),
+                  )
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.all(15),
                 child: Text(
-                  'Your Statistics',
+                  'Anime Statistics',
                   style: Theme.of(context).textTheme.headline6,
                 ),
               ),

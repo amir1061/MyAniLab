@@ -1,3 +1,5 @@
+import 'package:myanilab/Core/Models/chart_data.dart';
+
 class User {
   late final int id;
   late final String name;
@@ -126,5 +128,15 @@ class AnimeStatistics {
     _data['num_times_rewatched'] = numTimesRewatched;
     _data['mean_score'] = meanScore;
     return _data;
+  }
+
+  List<ChartData> animeStatistics() {
+    return [
+      ChartData('Watching', numItemsWatching),
+      ChartData('Completed', numItemsCompleted),
+      ChartData('OnHold', numItemsOnHold),
+      ChartData('Dropped', numItemsDropped),
+      ChartData('PlanToWatch', numItemsPlanToWatch),
+    ];
   }
 }
