@@ -36,6 +36,8 @@ class TokenProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     await setToken(null);
+    //? this future is here to allow the rebuild of all the other pages after log out
+    await Future.delayed(const Duration(seconds: 1));
     _isLoading = false;
     notifyListeners();
   }

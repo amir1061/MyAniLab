@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -15,7 +16,6 @@ class API {
   static final baseUrl = dotenv.env['baseUrl'] ?? '';
   static final clientId = dotenv.env['clientId'] ?? '';
   static final codeVerifier = dotenv.env['codeVerifier'] ?? '';
-
   static bool isRefreshingToken = false;
 
   static Map<String, String> getHeaders() {
@@ -48,9 +48,13 @@ class API {
   }
 
   static Future<Token> refreshToken() async {
+    if (isRefreshingToken) {
+      await Future.delayed(const Duration(seconds: 2));
+      return GetIt.I.get<Token>();
+    }
     try {
       isRefreshingToken = true;
-      log('refreshing token');
+      log('refreshing token===================================');
       final resp = await http.post(
         Uri.parse(oAuthUrl),
         headers: {
@@ -61,9 +65,12 @@ class API {
       );
       log(resp.statusCode.toString());
       log(resp.body.toString());
+
       final json = parseResponse(resp);
+      final token = Token.fromJson(json);
+      GetIt.I.registerSingleton<Token>(token);
       isRefreshingToken = false;
-      return Token.fromJson(json);
+      return token;
     } on SocketException catch (_) {
       isRefreshingToken = false;
       throw NoNetworkException('please check your network and try again!');
@@ -95,11 +102,7 @@ class API {
     } on SocketException catch (_) {
       throw NoNetworkException('please check your network and try again!');
     } on UnauthorisedException catch (_) {
-      if (isRefreshingToken) {
-        await Future.delayed(const Duration(seconds: 2));
-      } else {
-        await refreshToken();
-      }
+      await refreshToken();
       return await getUser();
     } on FormatException catch (_) {
       throw MalFormatException('failed parsing response!');
@@ -109,7 +112,7 @@ class API {
   }
 
   static Future<List<Anime>> getAnimeList(String endpointSuffix) async {
-    log(getHeaders().toString());
+    log('haders ' + getHeaders().toString());
     try {
       final resp = await http.get(
         Uri.parse(
@@ -124,11 +127,7 @@ class API {
     } on SocketException catch (_) {
       throw NoNetworkException('please check your network and try again!');
     } on UnauthorisedException catch (_) {
-      if (isRefreshingToken) {
-        await Future.delayed(const Duration(seconds: 2));
-      } else {
-        await refreshToken();
-      }
+      await refreshToken();
       return await getAnimeList(endpointSuffix);
     } on FormatException catch (_) {
       throw MalFormatException('failed parsing response!');

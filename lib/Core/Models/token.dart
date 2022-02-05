@@ -1,6 +1,4 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:get_it/get_it.dart';
-// import 'package:get_it/get_it.dart';
 
 class Token {
   late String _accessToken;
@@ -49,7 +47,6 @@ class Token {
     accessToken = json['access_token'];
     tokenType = json['token_type'];
     expiresIn = json['expires_in'];
-    GetIt.I.registerSingleton<Token>(this);
   }
 
   static Future<Token?> fromStorage() async {
