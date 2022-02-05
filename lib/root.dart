@@ -4,12 +4,13 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:myanilab/Core/API/api.dart';
 import 'package:myanilab/Core/Providers/token_provider.dart';
+import 'package:myanilab/Core/Utils/mal_exceptions.dart';
 import 'package:myanilab/UI/Views/home_view.dart';
 import 'package:myanilab/UI/Views/profile_view.dart';
 import 'package:myanilab/UI/Views/login_view.dart';
 import 'package:myanilab/UI/Views/top_anime_view.dart';
+import 'package:myanilab/UI/Widgets/loading_scaffold.dart';
 import 'package:myanilab/UI/Widgets/mal_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
@@ -92,8 +93,13 @@ class _RootState extends State<Root> {
 
   handleAuth(String code, String state) async {
     closeWebView();
-    final token = await API.getToken(code);
-    Provider.of<TokenProvider>(context, listen: false).token = token;
+    try {
+      await Provider.of<TokenProvider>(context, listen: false).getToken(code);
+    } on MalException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message)),
+      );
+    }
   }
 
   @override
@@ -107,9 +113,14 @@ class _RootState extends State<Root> {
             const HomeView(),
             const TopAnimeView(),
             Consumer<TokenProvider>(
-              builder: (_, tokenProvider, __) => tokenProvider.token == null
-                  ? const LoginWidget(title: 'Profile')
-                  : const ProfileView(),
+              builder: (_, tokenProvider, __) {
+                if (tokenProvider.isLoading) {
+                  return const LoadingScaffold(title: 'Profile');
+                }
+                return tokenProvider.token == null
+                    ? const LoginView(title: 'Profile')
+                    : const ProfileView();
+              },
             ),
           ],
         ),

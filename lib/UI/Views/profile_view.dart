@@ -39,7 +39,7 @@ class _ProfileViewState extends State<ProfileView> {
               Provider.of<TokenProvider>(
                 context,
                 listen: false,
-              ).token = null;
+              ).setToken(null);
               Provider.of<UserProvider>(
                 context,
                 listen: false,
@@ -52,8 +52,13 @@ class _ProfileViewState extends State<ProfileView> {
       body: Consumer<UserProvider>(
         builder: (_, userProvider, __) {
           if (userProvider.error != null) {
-            return Center(
-              child: Text(userProvider.error!.message),
+            return Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Text(
+                userProvider.error!.message,
+                textAlign: TextAlign.center,
+              ),
             );
           }
           if (userProvider.user == null) {

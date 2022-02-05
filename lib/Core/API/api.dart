@@ -34,6 +34,7 @@ class API {
         body:
             'client_id=$clientId&code=$code&code_verifier=$codeVerifier&grant_type=authorization_code',
       );
+      log(resp.statusCode.toString());
       log(resp.body.toString());
       final json = parseResponse(resp);
       return Token.fromJson(json);
@@ -57,6 +58,7 @@ class API {
         body:
             'client_id=$clientId&refresh_token=${GetIt.I.get<Token>().refreshToken}&grant_type=refresh_token',
       );
+      log(resp.body);
       final json = parseResponse(resp);
       return Token.fromJson(json);
     } on SocketException catch (_) {
@@ -103,8 +105,6 @@ class API {
         ),
         headers: getHeaders(),
       );
-      log(resp.statusCode.toString());
-      log(resp.body);
       final json = parseResponse(resp);
       return json['data']
           .map<Anime>((data) => Anime.fromJson(data['node']))

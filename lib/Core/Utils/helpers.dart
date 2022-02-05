@@ -46,7 +46,7 @@ void login() {
 
 dynamic parseResponse(http.Response response) {
   if (response.statusCode == 200) return json.decode(response.body);
-  final error = json.decode(response.body)['error'];
+  final error = json.decode(response.body)['message'];
   switch (response.statusCode) {
     case 400:
       throw BadRequestException(error);
