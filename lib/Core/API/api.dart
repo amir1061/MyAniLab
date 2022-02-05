@@ -16,6 +16,8 @@ class API {
   static final clientId = dotenv.env['clientId'] ?? '';
   static final codeVerifier = dotenv.env['codeVerifier'] ?? '';
 
+  static bool isRefreshingToken = false;
+
   static Map<String, String> getHeaders() {
     try {
       return {HttpHeaders.authorizationHeader: GetIt.I.get<Token>().token};
@@ -47,6 +49,7 @@ class API {
 
   static Future<Token> refreshToken() async {
     try {
+      isRefreshingToken = true;
       log('refreshing token');
       final resp = await http.post(
         Uri.parse(oAuthUrl),
@@ -56,16 +59,23 @@ class API {
         body:
             'client_id=$clientId&refresh_token=${GetIt.I.get<Token>().refreshToken}&grant_type=refresh_token',
       );
+      log(resp.statusCode.toString());
+      log(resp.body.toString());
       final json = parseResponse(resp);
+      isRefreshingToken = false;
       return Token.fromJson(json);
     } on SocketException catch (_) {
+      isRefreshingToken = false;
       throw NoNetworkException('please check your network and try again!');
     } on UnauthorisedException catch (_) {
       //?What happens if refreshing token failed
+      isRefreshingToken = false;
       rethrow;
     } on FormatException catch (_) {
+      isRefreshingToken = false;
       throw MalFormatException('failed parsing response!');
     } catch (e) {
+      isRefreshingToken = false;
       throw UnknownExcption(e.toString());
     }
   }
@@ -78,12 +88,18 @@ class API {
         ),
         headers: getHeaders(),
       );
+      log(resp.statusCode.toString());
+      log(resp.body.toString());
       final json = parseResponse(resp);
       return User.fromJson(json);
     } on SocketException catch (_) {
       throw NoNetworkException('please check your network and try again!');
     } on UnauthorisedException catch (_) {
-      await refreshToken();
+      if (isRefreshingToken) {
+        await Future.delayed(const Duration(seconds: 2));
+      } else {
+        await refreshToken();
+      }
       return await getUser();
     } on FormatException catch (_) {
       throw MalFormatException('failed parsing response!');
@@ -108,7 +124,11 @@ class API {
     } on SocketException catch (_) {
       throw NoNetworkException('please check your network and try again!');
     } on UnauthorisedException catch (_) {
-      await refreshToken();
+      if (isRefreshingToken) {
+        await Future.delayed(const Duration(seconds: 2));
+      } else {
+        await refreshToken();
+      }
       return await getAnimeList(endpointSuffix);
     } on FormatException catch (_) {
       throw MalFormatException('failed parsing response!');
