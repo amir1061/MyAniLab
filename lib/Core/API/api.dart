@@ -34,8 +34,6 @@ class API {
         body:
             'client_id=$clientId&code=$code&code_verifier=$codeVerifier&grant_type=authorization_code',
       );
-      log(resp.statusCode.toString());
-      log(resp.body.toString());
       final json = parseResponse(resp);
       return Token.fromJson(json);
     } on SocketException catch (_) {
@@ -58,7 +56,6 @@ class API {
         body:
             'client_id=$clientId&refresh_token=${GetIt.I.get<Token>().refreshToken}&grant_type=refresh_token',
       );
-      log(resp.body);
       final json = parseResponse(resp);
       return Token.fromJson(json);
     } on SocketException catch (_) {
@@ -81,8 +78,6 @@ class API {
         ),
         headers: getHeaders(),
       );
-      log(resp.statusCode.toString());
-      log(resp.body);
       final json = parseResponse(resp);
       return User.fromJson(json);
     } on SocketException catch (_) {
@@ -98,6 +93,7 @@ class API {
   }
 
   static Future<List<Anime>> getAnimeList(String endpointSuffix) async {
+    log(getHeaders().toString());
     try {
       final resp = await http.get(
         Uri.parse(

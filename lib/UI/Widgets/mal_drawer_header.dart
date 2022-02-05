@@ -107,7 +107,7 @@ class MalDrawerHeader extends StatelessWidget {
                   Provider.of<TokenProvider>(
                     context,
                     listen: false,
-                  ).setToken(null);
+                  ).logOut();
                   Provider.of<UserProvider>(
                     context,
                     listen: false,

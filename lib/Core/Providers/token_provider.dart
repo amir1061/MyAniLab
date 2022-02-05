@@ -14,7 +14,7 @@ class TokenProvider extends ChangeNotifier {
   }
 
   _init() async {
-    token = await Token.fromStorage();
+    await setToken(await Token.fromStorage());
     _isLoading = false;
     notifyListeners();
   }
@@ -22,18 +22,21 @@ class TokenProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   Token? get token => _token;
 
-  set token(Token? t) {
+  setToken(Token? t) async {
     _token = t;
     if (t == null) {
-      const FlutterSecureStorage().deleteAll();
-      GetIt.I.reset();
+      await const FlutterSecureStorage().deleteAll();
+      await GetIt.I.reset();
     } else {
       GetIt.I.registerSingleton<Token>(t);
     }
   }
 
-  setToken(Token? t) async {
-    token = t;
+  logOut() async {
+    _isLoading = true;
+    notifyListeners();
+    await setToken(null);
+    _isLoading = false;
     notifyListeners();
   }
 
@@ -41,7 +44,7 @@ class TokenProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      token = await API.getToken(code);
+      await setToken(await API.getToken(code));
       _isLoading = false;
       notifyListeners();
     } on MalException catch (_) {

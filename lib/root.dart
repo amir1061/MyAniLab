@@ -45,7 +45,6 @@ class _RootState extends State<Root> {
       subscription = uriLinkStream.listen(
         (uri) {
           if (!mounted) return;
-          log('got uri: $uri');
           if (uri != null) {
             final code = uri.queryParameters['code'];
             final state = uri.queryParameters['state'];
@@ -68,11 +67,6 @@ class _RootState extends State<Root> {
       initUriHandled = true;
       try {
         final uri = await getInitialUri();
-        if (uri == null) {
-          log('no initial uri');
-        } else {
-          log('got initial uri: $uri');
-        }
         if (!mounted) return;
         if (uri != null) {
           final code = uri.queryParameters['code'];
@@ -107,22 +101,22 @@ class _RootState extends State<Root> {
     return Scaffold(
       drawer: const MalDrawer(),
       body: Consumer<ValueNotifier<int>>(
-        builder: (context, activePage, child) => IndexedStack(
-          index: activePage.value,
-          children: [
-            const HomeView(),
-            const TopAnimeView(),
-            Consumer<TokenProvider>(
-              builder: (_, tokenProvider, __) {
-                if (tokenProvider.isLoading) {
-                  return const LoadingScaffold(title: 'Profile');
-                }
-                return tokenProvider.token == null
+        builder: (_, activePage, __) => Consumer<TokenProvider>(
+          builder: (_, tokenProvider, __) {
+            if (tokenProvider.isLoading) {
+              return LoadingScaffold(title: MalDrawer.items[activePage.value]);
+            }
+            return IndexedStack(
+              index: activePage.value,
+              children: [
+                const HomeView(),
+                const TopAnimeView(),
+                tokenProvider.token == null
                     ? const LoginView(title: 'Profile')
-                    : const ProfileView();
-              },
-            ),
-          ],
+                    : const ProfileView(),
+              ],
+            );
+          },
         ),
       ),
     );

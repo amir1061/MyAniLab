@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 class MalDrawer extends StatelessWidget {
   const MalDrawer({Key? key}) : super(key: key);
 
+  static const items = ['Home', 'Top Anime', 'Profile'];
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -14,35 +16,18 @@ class MalDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             const MalDrawerHeader(),
-            ListTile(
-              selectedTileColor: theme.colorScheme.primary.withOpacity(.3),
-              selected: activePage.value == 0,
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
-              onTap: () {
-                Navigator.pop(context);
-                if (activePage.value != 0) activePage.value = 0;
-              },
-            ),
-            ListTile(
-              selectedTileColor: theme.colorScheme.primary.withOpacity(.3),
-              selected: activePage.value == 1,
-              leading: const Icon(Icons.local_fire_department),
-              title: const Text('Top Anime'),
-              onTap: () {
-                Navigator.pop(context);
-                if (activePage.value != 1) activePage.value = 1;
-              },
-            ),
-            ListTile(
-              selectedTileColor: theme.colorScheme.primary.withOpacity(.3),
-              selected: activePage.value == 2,
-              leading: const Icon(Icons.person),
-              title: const Text('Profile'),
-              onTap: () {
-                Navigator.pop(context);
-                if (activePage.value != 2) activePage.value = 2;
-              },
+            ...List.generate(
+              items.length,
+              (index) => ListTile(
+                selectedTileColor: theme.colorScheme.primary.withOpacity(.3),
+                selected: activePage.value == index,
+                leading: const Icon(Icons.home),
+                title: Text(items[index]),
+                onTap: () {
+                  Navigator.pop(context);
+                  if (activePage.value != index) activePage.value = index;
+                },
+              ),
             ),
           ],
         ),

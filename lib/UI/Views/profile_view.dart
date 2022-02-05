@@ -39,7 +39,7 @@ class _ProfileViewState extends State<ProfileView> {
               Provider.of<TokenProvider>(
                 context,
                 listen: false,
-              ).setToken(null);
+              ).logOut();
               Provider.of<UserProvider>(
                 context,
                 listen: false,
