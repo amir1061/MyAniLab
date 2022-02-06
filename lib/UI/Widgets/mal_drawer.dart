@@ -5,7 +5,11 @@ import 'package:provider/provider.dart';
 class MalDrawer extends StatelessWidget {
   const MalDrawer({Key? key}) : super(key: key);
 
-  static const items = ['Home', 'Top Anime', 'Profile'];
+  static const items = {
+    'Home': Icons.home,
+    'Top Anime': Icons.trending_up,
+    'Profile': Icons.person,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +25,8 @@ class MalDrawer extends StatelessWidget {
               (index) => ListTile(
                 selectedTileColor: theme.colorScheme.primary.withOpacity(.3),
                 selected: activePage.value == index,
-                leading: const Icon(Icons.home),
-                title: Text(items[index]),
+                leading: Icon(items.values.toList()[index]),
+                title: Text(items.keys.toList()[index]),
                 onTap: () {
                   Navigator.pop(context);
                   if (activePage.value != index) activePage.value = index;

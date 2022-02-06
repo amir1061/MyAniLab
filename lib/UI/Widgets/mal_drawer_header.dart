@@ -103,16 +103,7 @@ class MalDrawerHeader extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.logout),
                 color: theme.colorScheme.onPrimary,
-                onPressed: () {
-                  Provider.of<TokenProvider>(
-                    context,
-                    listen: false,
-                  ).logOut();
-                  Provider.of<UserProvider>(
-                    context,
-                    listen: false,
-                  ).reset();
-                },
+                onPressed: () => logout(context),
               ),
               ThemeIconButton(color: theme.colorScheme.onPrimary),
             ],

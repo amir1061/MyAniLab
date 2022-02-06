@@ -3,7 +3,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:myanilab/Core/Providers/token_provider.dart';
+import 'package:myanilab/Core/Providers/user_provider.dart';
 import 'package:myanilab/Core/Utils/mal_exceptions.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
@@ -29,7 +32,7 @@ String getRandomHash([int length = 128]) {
   return base64Url.encode(values);
 }
 
-void login() {
+Future<void> login() async {
   final uri = Uri(
     scheme: 'https',
     host: 'myanimelist.net',
@@ -41,12 +44,24 @@ void login() {
       'state': dotenv.env['state'],
     },
   );
-  launchUrl(uri.toString());
+  await launchUrl(uri.toString());
+}
+
+Future<void> logout(BuildContext context) async {
+  await Provider.of<TokenProvider>(
+    context,
+    listen: false,
+  ).logOut();
+  Provider.of<UserProvider>(
+    context,
+    listen: false,
+  ).reset();
 }
 
 dynamic parseResponse(http.Response response) {
   if (response.statusCode == 200) return json.decode(response.body);
-  final error = json.decode(response.body)['error'];
+  final data = json.decode(response.body);
+  final String error = data['message'] ?? data['error'];
   switch (response.statusCode) {
     case 400:
       throw BadRequestException(error);

@@ -77,7 +77,9 @@ class API {
     } on UnauthorisedException catch (_) {
       //?What happens if refreshing token failed
       isRefreshingToken = false;
-      rethrow;
+      throw UnauthorisedException(
+        'Session expired: please logout and login again!',
+      );
     } on FormatException catch (_) {
       isRefreshingToken = false;
       throw MalFormatException('failed parsing response!');

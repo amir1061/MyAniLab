@@ -104,7 +104,9 @@ class _RootState extends State<Root> {
         builder: (_, activePage, __) => Consumer<TokenProvider>(
           builder: (_, tokenProvider, __) {
             if (tokenProvider.isLoading) {
-              return LoadingScaffold(title: MalDrawer.items[activePage.value]);
+              return LoadingScaffold(
+                title: MalDrawer.items.keys.toList()[activePage.value],
+              );
             }
             return IndexedStack(
               index: activePage.value,

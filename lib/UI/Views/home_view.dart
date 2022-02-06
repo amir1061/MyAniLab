@@ -23,21 +23,37 @@ class HomeView extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          const storage = FlutterSecureStorage();
-          final accessToken = await storage.read(key: 'accessToken');
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton.extended(
+            onPressed: () async {
+              const storage = FlutterSecureStorage();
+              final refreshToken = await storage.read(key: 'refreshToken');
 
-          await storage.write(
-            key: 'accessToken',
-            value: '${accessToken}ksjdfks',
-          );
-          GetIt.I.registerSingleton<Token>((await Token.fromStorage())!);
-          // Provider.of<TokenProvider>(context, listen: false).setToken(
-          //   await Token.fromStorage(),
-          // );
-        },
-        label: const Text('Mess up access token'),
+              await storage.write(
+                key: 'refreshToken',
+                value: '${refreshToken}ksjdfks',
+              );
+              GetIt.I.registerSingleton<Token>((await Token.fromStorage())!);
+            },
+            label: const Text('Mess up refresh token'),
+          ),
+          const SizedBox(height: 10),
+          FloatingActionButton.extended(
+            onPressed: () async {
+              const storage = FlutterSecureStorage();
+              final accessToken = await storage.read(key: 'accessToken');
+
+              await storage.write(
+                key: 'accessToken',
+                value: '${accessToken}ksjdfks',
+              );
+              GetIt.I.registerSingleton<Token>((await Token.fromStorage())!);
+            },
+            label: const Text('Mess up access token'),
+          ),
+        ],
       ),
     );
   }

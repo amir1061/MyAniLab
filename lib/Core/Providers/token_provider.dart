@@ -22,7 +22,7 @@ class TokenProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   Token? get token => _token;
 
-  setToken(Token? t) async {
+  Future<void> setToken(Token? t) async {
     _token = t;
     if (t == null) {
       await const FlutterSecureStorage().deleteAll();
@@ -32,7 +32,7 @@ class TokenProvider extends ChangeNotifier {
     }
   }
 
-  logOut() async {
+  Future<void> logOut() async {
     _isLoading = true;
     notifyListeners();
     await setToken(null);
@@ -42,7 +42,7 @@ class TokenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getToken(String code) async {
+  Future<void> getToken(String code) async {
     _isLoading = true;
     notifyListeners();
     try {

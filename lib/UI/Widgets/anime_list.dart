@@ -53,18 +53,20 @@ class AnimeList<T> extends StatelessWidget {
             controller: _refreshController,
             header: const MaterialClassicHeader(),
             onRefresh: () => _onRefresh(context),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.error),
-                const SizedBox(height: 10),
-                Text(
-                  animesProvider.error.message,
-                  textAlign: TextAlign.center,
-                  textDirection: TextDirection.rtl,
-                  style: const TextStyle(color: Colors.grey),
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error),
+                  const SizedBox(height: 10),
+                  Text(
+                    animesProvider.error.message,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
             ),
           );
         }
@@ -75,7 +77,7 @@ class AnimeList<T> extends StatelessWidget {
         }
         if (animesProvider.animes!.isEmpty) {
           return const Center(
-            child: Text('لم يتم العثور على أي أنمي!'),
+            child: Text('No animes found!'),
           );
         }
         return SmartRefresher(
@@ -83,11 +85,11 @@ class AnimeList<T> extends StatelessWidget {
           header: const MaterialClassicHeader(),
           footer: const ClassicFooter(
             loadStyle: LoadStyle.ShowWhenLoading,
-            loadingText: 'تحميل المزيد',
-            noDataText: 'هذا كل شئ',
-            idleText: 'غير نشط',
-            failedText: 'فشلت المحاولة',
-            canLoadingText: 'حرر لتحميل المزيد',
+            loadingText: 'Loading',
+            noDataText: 'No Data',
+            idleText: 'Idle',
+            failedText: 'Failed',
+            canLoadingText: 'Release to load more',
           ),
           controller: _refreshController,
           onRefresh: () => _onRefresh(context),

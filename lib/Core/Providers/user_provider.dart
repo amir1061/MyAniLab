@@ -10,7 +10,7 @@ class UserProvider extends ChangeNotifier {
   User? get user => _user;
   MalException? get error => _error;
 
-  reset() {
+  void reset() {
     _user = null;
     _error = null;
     notifyListeners();
