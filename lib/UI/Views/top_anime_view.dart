@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myanilab/Core/Providers/top_anime_provider.dart';
-import 'package:myanilab/Core/Utils/enums.dart';
 import 'package:myanilab/UI/Widgets/anime_list.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +11,7 @@ class TopAnimeView extends StatefulWidget {
 }
 
 class _TopAnimeViewState extends State<TopAnimeView> {
-  ViewType viewType = ViewType.grid;
+  bool isGrid = true;
 
   static const _tabs = {
     'all': 'All time',
@@ -43,16 +42,9 @@ class _TopAnimeViewState extends State<TopAnimeView> {
           ),
           actions: [
             IconButton(
-              onPressed: () {
-                if (viewType == ViewType.grid) {
-                  viewType = ViewType.list;
-                } else if (viewType == ViewType.list) {
-                  viewType = ViewType.grid;
-                }
-                setState(() {});
-              },
+              onPressed: () => setState(() => isGrid = !isGrid),
               icon: Icon(
-                viewType == ViewType.grid ? Icons.view_list : Icons.view_module,
+                isGrid ? Icons.view_list : Icons.view_module,
               ),
             )
           ],
@@ -66,7 +58,7 @@ class _TopAnimeViewState extends State<TopAnimeView> {
               .map(
                 (type) => ChangeNotifierProvider(
                   create: (_) => TopAnimeProvider(rankingType: type),
-                  child: AnimeList<TopAnimeProvider>(viewType: viewType),
+                  child: AnimeList<TopAnimeProvider>(isGrid: isGrid),
                 ),
               )
               .toList(),

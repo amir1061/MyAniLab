@@ -1,15 +1,14 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:myanilab/Core/Utils/enums.dart';
 import 'package:myanilab/UI/Widgets/anime_grid_item.dart';
 import 'package:myanilab/UI/Widgets/anime_list_item.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class AnimeList<T> extends StatefulWidget {
-  final ViewType viewType;
-  const AnimeList({Key? key, this.viewType = ViewType.grid}) : super(key: key);
+  final bool isGrid;
+  const AnimeList({Key? key, this.isGrid = true}) : super(key: key);
 
   @override
   State<AnimeList<T>> createState() => _AnimeListState<T>();
@@ -102,7 +101,7 @@ class _AnimeListState<T> extends State<AnimeList<T>>
           onRefresh: () => _onRefresh(context),
           onLoading: () => _onLoading(context),
           physics: const BouncingScrollPhysics(),
-          child: widget.viewType == ViewType.grid
+          child: widget.isGrid
               ? GridView.builder(
                   addRepaintBoundaries: false,
                   physics: const BouncingScrollPhysics(),
