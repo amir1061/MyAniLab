@@ -48,7 +48,7 @@ Future<void> login() async {
 }
 
 Future<void> logout(BuildContext context) async {
-  await Provider.of<TokenProvider>(
+  Provider.of<TokenProvider>(
     context,
     listen: false,
   ).logOut();

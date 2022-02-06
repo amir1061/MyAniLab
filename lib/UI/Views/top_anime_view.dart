@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:myanilab/UI/Widgets/top_anime_list.dart';
+import 'package:myanilab/Core/Providers/top_anime_provider.dart';
+import 'package:myanilab/Core/Utils/enums.dart';
+import 'package:myanilab/UI/Widgets/anime_list.dart';
+import 'package:provider/provider.dart';
 
-class TopAnimeView extends StatelessWidget {
+class TopAnimeView extends StatefulWidget {
   const TopAnimeView({Key? key}) : super(key: key);
 
-  static const tabs = {
+  @override
+  State<TopAnimeView> createState() => _TopAnimeViewState();
+}
+
+class _TopAnimeViewState extends State<TopAnimeView> {
+  ViewType viewType = ViewType.grid;
+
+  static const _tabs = {
     'all': 'All time',
     'airing': 'Airing',
     'upcoming': 'Upcoming',
@@ -31,13 +41,35 @@ class TopAnimeView extends StatelessWidget {
               scaffoldState.openDrawer();
             },
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                if (viewType == ViewType.grid) {
+                  viewType = ViewType.list;
+                } else if (viewType == ViewType.list) {
+                  viewType = ViewType.grid;
+                }
+                setState(() {});
+              },
+              icon: Icon(
+                viewType == ViewType.grid ? Icons.view_list : Icons.view_module,
+              ),
+            )
+          ],
           bottom: TabBar(
             isScrollable: true,
-            tabs: tabs.values.map((name) => Tab(text: name)).toList(),
+            tabs: _tabs.values.map((name) => Tab(text: name)).toList(),
           ),
         ),
         body: TabBarView(
-          children: tabs.keys.map((type) => TopAnimeList(type: type)).toList(),
+          children: _tabs.keys
+              .map(
+                (type) => ChangeNotifierProvider(
+                  create: (_) => TopAnimeProvider(rankingType: type),
+                  child: AnimeList<TopAnimeProvider>(viewType: viewType),
+                ),
+              )
+              .toList(),
         ),
       ),
     );

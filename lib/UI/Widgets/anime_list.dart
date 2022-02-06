@@ -7,10 +7,16 @@ import 'package:myanilab/UI/Widgets/anime_list_item.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class AnimeList<T> extends StatelessWidget {
+class AnimeList<T> extends StatefulWidget {
   final ViewType viewType;
-  AnimeList({Key? key, this.viewType = ViewType.grid}) : super(key: key);
+  const AnimeList({Key? key, this.viewType = ViewType.grid}) : super(key: key);
 
+  @override
+  State<AnimeList<T>> createState() => _AnimeListState<T>();
+}
+
+class _AnimeListState<T> extends State<AnimeList<T>>
+    with AutomaticKeepAliveClientMixin {
   final _refreshController = RefreshController();
 
   void _onRefresh(context) async {
@@ -45,6 +51,7 @@ class AnimeList<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Consumer<T>(
       builder: (context, provider, child) {
         dynamic animesProvider = provider;
@@ -95,7 +102,7 @@ class AnimeList<T> extends StatelessWidget {
           onRefresh: () => _onRefresh(context),
           onLoading: () => _onLoading(context),
           physics: const BouncingScrollPhysics(),
-          child: viewType == ViewType.grid
+          child: widget.viewType == ViewType.grid
               ? GridView.builder(
                   addRepaintBoundaries: false,
                   physics: const BouncingScrollPhysics(),
@@ -123,4 +130,7 @@ class AnimeList<T> extends StatelessWidget {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

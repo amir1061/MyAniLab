@@ -28,14 +28,14 @@ class AnimeListItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(5),
           ),
           child: Container(
-            height: 80,
+            height: 120,
             padding: const EdgeInsets.all(8),
             child: Row(
               children: [
                 Hero(
                   tag: heroTag,
                   child: AspectRatio(
-                    aspectRatio: 1,
+                    aspectRatio: 225 / 318,
                     child: Card(
                       elevation: 4,
                       margin: EdgeInsets.zero,
