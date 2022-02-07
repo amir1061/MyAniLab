@@ -22,7 +22,7 @@ class _AnimeListState<T> extends State<AnimeList<T>>
     try {
       final dynamic latestUpdatedProvider =
           Provider.of<T>(context, listen: false);
-      latestUpdatedProvider.reset();
+      latestUpdatedProvider.init();
       await latestUpdatedProvider.getAnimes();
       _refreshController.refreshCompleted();
       _refreshController.loadComplete();

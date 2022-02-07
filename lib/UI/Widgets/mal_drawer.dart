@@ -8,6 +8,7 @@ class MalDrawer extends StatelessWidget {
   static const items = {
     'Home': Icons.home,
     'Top Anime': Icons.trending_up,
+    'Seasonal Anime': Icons.calendar_today,
     'Profile': Icons.person,
   };
 

@@ -114,7 +114,7 @@ class API {
   }
 
   static Future<List<Anime>> getAnimeList(String endpointSuffix) async {
-    log('haders ' + getHeaders().toString());
+    log(endpointSuffix);
     try {
       final resp = await http.get(
         Uri.parse(

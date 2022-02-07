@@ -3,15 +3,16 @@ import 'package:myanilab/Core/API/api.dart';
 import 'package:myanilab/Core/Models/anime.dart';
 import 'package:myanilab/Core/Utils/mal_exceptions.dart';
 
-class TopAnimeProvider with ChangeNotifier {
-  final String rankingType;
+class SeasonalAnimeProvider with ChangeNotifier {
+  static const int limit = 30;
+  final String season;
+  final String year;
   List<Anime>? animes;
   MalException? error;
-  int limit = 30;
   int offset = 0;
   bool canLoadMore = true;
 
-  TopAnimeProvider({required this.rankingType}) {
+  SeasonalAnimeProvider({required this.season, required this.year}) {
     init();
     getAnimes();
   }
@@ -26,7 +27,7 @@ class TopAnimeProvider with ChangeNotifier {
   Future<void> getAnimes() async {
     try {
       var moreAnimes = await API.getAnimeList(
-        '/anime/ranking?ranking_type=$rankingType&offset=${offset * limit}&limit=$limit',
+        '/anime/season/$year/$season?offset=${offset * limit}&limit=$limit',
       );
       canLoadMore = moreAnimes.isNotEmpty;
       if (animes == null) {

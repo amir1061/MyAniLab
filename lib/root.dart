@@ -9,6 +9,7 @@ import 'package:myanilab/Core/Utils/mal_exceptions.dart';
 import 'package:myanilab/UI/Views/home_view.dart';
 import 'package:myanilab/UI/Views/profile_view.dart';
 import 'package:myanilab/UI/Views/login_view.dart';
+import 'package:myanilab/UI/Views/seasonal_anime_view.dart';
 import 'package:myanilab/UI/Views/top_anime_view.dart';
 import 'package:myanilab/UI/Widgets/loading_scaffold.dart';
 import 'package:myanilab/UI/Widgets/mal_drawer.dart';
@@ -113,6 +114,7 @@ class _RootState extends State<Root> {
               children: [
                 const HomeView(),
                 const TopAnimeView(),
+                const SeasonalAnimeView(),
                 tokenProvider.token == null
                     ? const LoginView(title: 'Profile')
                     : const ProfileView(),

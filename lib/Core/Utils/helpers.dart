@@ -78,3 +78,68 @@ dynamic parseResponse(http.Response response) {
       );
   }
 }
+
+Map<String, String> getCurrentSeason() {
+  final date = DateTime.now();
+  final season = {'year': date.year.toString()};
+  if ([1, 2, 3].contains(date.month)) {
+    season.putIfAbsent('season', () => 'winter');
+  }
+  if ([4, 5, 6].contains(date.month)) {
+    season.putIfAbsent('season', () => 'spring');
+  }
+  if ([7, 8, 9].contains(date.month)) {
+    season.putIfAbsent('season', () => 'summer');
+  }
+  if ([10, 11, 12].contains(date.month)) {
+    season.putIfAbsent('season', () => 'fall');
+  }
+  return season;
+}
+
+Map<String, String> getPreviousSeason() {
+  final date = DateTime.now();
+  final season = {'year': date.year.toString()};
+  if ([1, 2, 3].contains(date.month)) {
+    season['year'] = (date.year - 1).toString();
+    season.putIfAbsent('season', () => 'fall');
+  }
+  if ([4, 5, 6].contains(date.month)) {
+    season.putIfAbsent('season', () => 'winter');
+  }
+  if ([7, 8, 9].contains(date.month)) {
+    season.putIfAbsent('season', () => 'spring');
+  }
+  if ([10, 11, 12].contains(date.month)) {
+    season.putIfAbsent('season', () => 'summer');
+  }
+  return season;
+}
+
+Map<String, String> getNextSeason() {
+  final date = DateTime.now();
+  final season = {'year': date.year.toString()};
+  if ([1, 2, 3].contains(date.month)) {
+    season.putIfAbsent('season', () => 'spring');
+  }
+  if ([4, 5, 6].contains(date.month)) {
+    season.putIfAbsent('season', () => 'summer');
+  }
+  if ([7, 8, 9].contains(date.month)) {
+    season.putIfAbsent('season', () => 'fall');
+  }
+  if ([10, 11, 12].contains(date.month)) {
+    season['year'] = (date.year + 1).toString();
+    season.putIfAbsent('season', () => 'winter');
+  }
+  return season;
+}
+
+Map<String, String> getSeason(String season) {
+  if (season == 'previous') {
+    return getPreviousSeason();
+  } else if (season == 'current') {
+    return getCurrentSeason();
+  }
+  return getNextSeason();
+}
