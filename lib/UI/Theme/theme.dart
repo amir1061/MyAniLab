@@ -12,9 +12,9 @@ class MyAniLabTheme {
     cardColor: Colors.white,
     colorScheme: const ColorScheme(
       primary: Color(0xFF6200EE),
-      primaryVariant: Color(0xFF3700B3),
+      primaryContainer: Color(0xFF3700B3),
       secondary: Color(0xFF03DAC6),
-      secondaryVariant: Color(0xFF018786),
+      secondaryContainer: Color(0xFF018786),
       surface: Colors.white,
       background: Colors.white,
       error: Color(0xFFB00020),
@@ -38,9 +38,9 @@ class MyAniLabTheme {
     cardColor: const Color(0xFF1E1E1E),
     colorScheme: const ColorScheme(
       primary: Color(0xFFBB86FC),
-      primaryVariant: Color(0xFF3700B3),
+      primaryContainer: Color(0xFF3700B3),
       secondary: Color(0xFF03DAC6),
-      secondaryVariant: Color(0xFF03DAC6),
+      secondaryContainer: Color(0xFF03DAC6),
       surface: Color(0xFF121212),
       background: Color(0xFF121212),
       error: Color(0xFFCF6679),

@@ -40,8 +40,6 @@ class API {
       return Token.fromJson(json);
     } on SocketException catch (_) {
       throw NoNetworkException('please check your network and try again!');
-    } on FormatException catch (_) {
-      throw MalFormatException('failed parsing response!');
     } catch (e) {
       throw UnknownExcption(e.toString());
     }
@@ -63,9 +61,6 @@ class API {
         body:
             'client_id=$clientId&refresh_token=${GetIt.I.get<Token>().refreshToken}&grant_type=refresh_token',
       );
-      log(resp.statusCode.toString());
-      log(resp.body.toString());
-
       final json = parseResponse(resp);
       final token = Token.fromJson(json);
       GetIt.I.registerSingleton<Token>(token);
@@ -97,8 +92,6 @@ class API {
         ),
         headers: getHeaders(),
       );
-      log(resp.statusCode.toString());
-      log(resp.body.toString());
       final json = parseResponse(resp);
       return User.fromJson(json);
     } on SocketException catch (_) {
@@ -106,15 +99,12 @@ class API {
     } on UnauthorisedException catch (_) {
       await refreshToken();
       return await getUser();
-    } on FormatException catch (_) {
-      throw MalFormatException('failed parsing response!');
     } catch (e) {
       throw UnknownExcption(e.toString());
     }
   }
 
   static Future<List<Anime>> getAnimeList(String endpointSuffix) async {
-    log(endpointSuffix);
     try {
       final resp = await http.get(
         Uri.parse(
@@ -131,8 +121,6 @@ class API {
     } on UnauthorisedException catch (_) {
       await refreshToken();
       return await getAnimeList(endpointSuffix);
-    } on FormatException catch (_) {
-      throw MalFormatException('failed parsing response!');
     } catch (e) {
       throw UnknownExcption(e.toString());
     }

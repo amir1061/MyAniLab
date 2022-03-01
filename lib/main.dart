@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
+import 'package:myanilab/Core/Providers/seasonal_anime_provider.dart';
 import 'package:myanilab/Core/Providers/token_provider.dart';
 import 'package:myanilab/Core/Providers/user_provider.dart';
+import 'package:myanilab/Core/Utils/helpers.dart';
 import 'package:myanilab/UI/Theme/theme.dart';
 import 'package:myanilab/root.dart';
 import 'package:provider/provider.dart';
@@ -15,9 +17,15 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TokenProvider()),
-        ChangeNotifierProvider(create: (_) => ValueNotifier(2)),
+        ChangeNotifierProvider(create: (_) => ValueNotifier(3)),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => ValueNotifier(ThemeMode.dark)),
+        ChangeNotifierProvider(
+          create: (_) => CustomSeasonalAnimeProvider(
+            season: getCurrentSeason()['season']!,
+            year: DateTime.now().year.toString(),
+          ),
+        ),
       ],
       child: const MyApp(),
     ),

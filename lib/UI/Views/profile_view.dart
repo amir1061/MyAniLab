@@ -94,7 +94,7 @@ class _ProfileViewState extends State<ProfileView> {
                 ExpansionTile(
                   initiallyExpanded: true,
                   leading: CircleAvatar(
-                    backgroundColor: theme.colorScheme.primaryVariant,
+                    backgroundColor: theme.colorScheme.primaryContainer,
                     backgroundImage: user.picture != null
                         ? NetworkImage(user.picture!)
                         : null,
@@ -124,6 +124,7 @@ class _ProfileViewState extends State<ProfileView> {
                   ),
                   series: <CircularSeries>[
                     DoughnutSeries<ChartData, String>(
+                      animationDuration: 0,
                       dataSource: user.animeStatistics?.animeStatistics() ?? [],
                       xValueMapper: (data, _) => data.title,
                       yValueMapper: (data, _) => data.value,

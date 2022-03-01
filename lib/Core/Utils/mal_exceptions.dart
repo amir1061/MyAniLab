@@ -12,7 +12,7 @@ class MalException implements Exception {
 
 class FetchDataException extends MalException {
   FetchDataException(String message)
-      : super(message: message, prefix: "Error During Communication: ");
+      : super(message: message, prefix: "Internal server error: ");
 }
 
 class BadRequestException extends MalException {

@@ -5,8 +5,8 @@ import 'package:myanilab/Core/Utils/mal_exceptions.dart';
 
 class SeasonalAnimeProvider with ChangeNotifier {
   static const int limit = 30;
-  final String season;
-  final String year;
+  String season;
+  String year;
   List<Anime>? animes;
   MalException? error;
   int offset = 0;
@@ -26,15 +26,11 @@ class SeasonalAnimeProvider with ChangeNotifier {
 
   Future<void> getAnimes() async {
     try {
-      var moreAnimes = await API.getAnimeList(
+      final moreAnimes = await API.getAnimeList(
         '/anime/season/$year/$season?offset=${offset * limit}&limit=$limit',
       );
       canLoadMore = moreAnimes.isNotEmpty;
-      if (animes == null) {
-        animes = moreAnimes;
-      } else {
-        animes!.addAll(moreAnimes);
-      }
+      animes == null ? animes = moreAnimes : animes!.addAll(moreAnimes);
       offset++;
       error = null;
       notifyListeners();
@@ -43,4 +39,9 @@ class SeasonalAnimeProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+}
+
+class CustomSeasonalAnimeProvider extends SeasonalAnimeProvider {
+  CustomSeasonalAnimeProvider({required String season, required String year})
+      : super(season: season, year: year);
 }

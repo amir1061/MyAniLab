@@ -16,7 +16,7 @@ class MalDrawerHeader extends StatelessWidget {
         return UserAccountsDrawerHeader(
           decoration: BoxDecoration(color: theme.colorScheme.primary),
           currentAccountPicture: CircleAvatar(
-            backgroundColor: theme.colorScheme.primaryVariant,
+            backgroundColor: theme.colorScheme.primaryContainer,
             child: const Icon(Icons.person, size: 40),
           ),
           otherAccountsPictures: [
@@ -43,7 +43,7 @@ class MalDrawerHeader extends StatelessWidget {
             return UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: theme.colorScheme.primary),
               currentAccountPicture: CircleAvatar(
-                backgroundColor: theme.colorScheme.primaryVariant,
+                backgroundColor: theme.colorScheme.primaryContainer,
                 child: const Icon(Icons.error),
               ),
               otherAccountsPictures: [
@@ -68,7 +68,7 @@ class MalDrawerHeader extends StatelessWidget {
             return UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: theme.colorScheme.primary),
               currentAccountPicture: CircleAvatar(
-                backgroundColor: theme.colorScheme.primaryVariant,
+                backgroundColor: theme.colorScheme.primaryContainer,
                 child: const SizedBox(
                   width: 20,
                   height: 20,
@@ -92,7 +92,7 @@ class MalDrawerHeader extends StatelessWidget {
           return UserAccountsDrawerHeader(
             decoration: BoxDecoration(color: theme.colorScheme.primary),
             currentAccountPicture: CircleAvatar(
-              backgroundColor: theme.colorScheme.primaryVariant,
+              backgroundColor: theme.colorScheme.primaryContainer,
               backgroundImage:
                   user.picture != null ? NetworkImage(user.picture!) : null,
               child: user.picture == null

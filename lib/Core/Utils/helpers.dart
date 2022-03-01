@@ -58,24 +58,26 @@ Future<void> logout(BuildContext context) async {
   ).reset();
 }
 
-dynamic parseResponse(http.Response response) {
-  if (response.statusCode == 200) return json.decode(response.body);
-  final data = json.decode(response.body);
-  final String error = data['message'] ?? data['error'];
-  switch (response.statusCode) {
-    case 400:
-      throw BadRequestException(error);
-    case 401:
-      throw UnauthorisedException(error);
-    case 403:
-      throw ForbidenException(error);
-    case 404:
-      throw NotFoundException(error);
-    case 500:
-    default:
-      throw FetchDataException(
-        'Error occured while Communication with Server with StatusCode ${response.statusCode}',
-      );
+dynamic parseResponse(http.Response rep) {
+  try {
+    if (rep.statusCode == 200) return json.decode(rep.body);
+    final data = json.decode(rep.body);
+    final String error = data['message'] ?? data['error'];
+    switch (rep.statusCode) {
+      case 400:
+        throw BadRequestException(error);
+      case 401:
+        throw UnauthorisedException(error);
+      case 403:
+        throw ForbidenException(error);
+      case 404:
+        throw NotFoundException(error);
+      case 500:
+      default:
+        throw FetchDataException('error with status code ${rep.statusCode}');
+    }
+  } on FormatException catch (_) {
+    throw MalFormatException('failed parsing response!');
   }
 }
 
