@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -52,7 +51,6 @@ class API {
     }
     try {
       isRefreshingToken = true;
-      log('refreshing token===================================');
       final resp = await http.post(
         Uri.parse(oAuthUrl),
         headers: {
@@ -73,8 +71,7 @@ class API {
       //?What happens if refreshing token failed
       isRefreshingToken = false;
       throw UnauthorisedException(
-        'Session expired: please logout and login again!',
-      );
+          'Session expired, please logout and login again!');
     } on FormatException catch (_) {
       isRefreshingToken = false;
       throw MalFormatException('failed parsing response!');
@@ -107,9 +104,7 @@ class API {
   static Future<List<Anime>> getAnimeList(String endpointSuffix) async {
     try {
       final resp = await http.get(
-        Uri.parse(
-          '$baseUrl$endpointSuffix',
-        ),
+        Uri.parse('$baseUrl$endpointSuffix'),
         headers: getHeaders(),
       );
       final json = parseResponse(resp);

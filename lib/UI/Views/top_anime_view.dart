@@ -44,7 +44,7 @@ class _TopAnimeViewState extends State<TopAnimeView> {
             IconButton(
               onPressed: () => setState(() => isGrid = !isGrid),
               icon: Icon(
-                isGrid ? Icons.view_list : Icons.view_module,
+                isGrid ? Icons.view_headline : Icons.apps,
               ),
             )
           ],

@@ -6,49 +6,49 @@ class MalException implements Exception {
 
   @override
   String toString() {
-    return "$prefix$message";
+    return "$prefix: $message";
   }
 }
 
 class FetchDataException extends MalException {
   FetchDataException(String message)
-      : super(message: message, prefix: "Internal server error: ");
+      : super(message: message, prefix: "Internal Server Error");
 }
 
 class BadRequestException extends MalException {
   BadRequestException(message)
-      : super(message: message, prefix: "Invalid Request: ");
+      : super(message: message, prefix: "Invalid Request");
 }
 
 class UnauthorisedException extends MalException {
   UnauthorisedException(message)
-      : super(message: message, prefix: "Unauthorised: ");
+      : super(message: message, prefix: "Unauthorised");
 }
 
 class ForbidenException extends MalException {
-  ForbidenException(message) : super(message: message, prefix: "Forbiden: ");
+  ForbidenException(message) : super(message: message, prefix: "Forbiden");
 }
 
 class NotFoundException extends MalException {
-  NotFoundException(message) : super(message: message, prefix: "Forbiden: ");
+  NotFoundException(message) : super(message: message, prefix: "Not Found");
 }
 
 class InvalidInputException extends MalException {
   InvalidInputException(String message)
-      : super(message: message, prefix: "Invalid Input: ");
+      : super(message: message, prefix: "Invalid Input");
 }
 
 class MalFormatException extends MalException {
   MalFormatException(String message)
-      : super(message: message, prefix: "Format Exception: ");
+      : super(message: message, prefix: "Format Exception");
 }
 
 class NoNetworkException extends MalException {
   NoNetworkException(String message)
-      : super(message: message, prefix: "No Network: ");
+      : super(message: message, prefix: "No Network");
 }
 
 class UnknownExcption extends MalException {
   UnknownExcption(String message)
-      : super(message: message, prefix: "Uknown Error: ");
+      : super(message: message, prefix: "Uknown Error");
 }
