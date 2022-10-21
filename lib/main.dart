@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       themeMode: Provider.of<ValueNotifier<ThemeMode>>(context).value,
       theme: MyAniLabTheme.light,
       darkTheme: MyAniLabTheme.dark,
-      home: const Root(),
+      home: const Root(),// just trying to appoarch you// My email is amirmuhammad1061@gmail.com
     );
   }
 }
